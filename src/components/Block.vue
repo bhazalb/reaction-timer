@@ -1,5 +1,5 @@
 <template>
-    <div class="block"  v-if="showBlock">
+    <div class="block"  v-if="showBlock"  @click="stopTimer">
         click me
     </div>
 </template>
@@ -9,7 +9,9 @@ export default {
     props: ['delay'],
     data() {
         return {
-            showBlock: false
+            showBlock: false,
+            timer : null ,
+            reactionTime : 0,
         }
     },
     /* lifecycle hooks (yaşam döngüsü konusu) play a basıncs mounted çalıştı */
@@ -17,13 +19,25 @@ export default {
         console.log('component mounted')
         setTimeout(() => {
             this.showBlock = true
-            console.log(this.delay)
+            this.startTimer()
         }, this.delay);
     }, 
     /* mounted çalıştıktan sonra çıkan gri ekranda da updated çalıştı */ 
-    updated() {
+    /*updated() {
         console.log('component update')
-    },
+    },*/
+
+    methods: {
+        startTimer(){
+         this.timer = setInterval(() => {
+            this.reactionTime += 10
+         }, 10)
+        },
+        stopTimer (){
+        clearInterval (this.timer)
+        this.$emit('end', this.reactionTime)
+        }
+    }
 }
 </script>
 
